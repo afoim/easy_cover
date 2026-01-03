@@ -253,6 +253,88 @@ export default function Controls() {
               />
             </div>
             
+            <div className="flex items-center justify-between">
+              <Label htmlFor="text-split">拆分标题</Label>
+              <Switch 
+                id="text-split" 
+                checked={store.text.isSplit} 
+                onCheckedChange={(c) => store.updateText({ isSplit: c })} 
+              />
+            </div>
+
+            {store.text.isSplit && (
+                <div className="space-y-4 p-3 bg-muted/30 rounded-lg border">
+                    {/* Presets */}
+                    <div className="space-y-2">
+                         <Label className="text-xs font-semibold text-muted-foreground">预设风格</Label>
+                         <div className="flex flex-wrap gap-2">
+                             {SPLIT_PRESETS.map((preset) => (
+                                 <Button
+                                     key={preset.name}
+                                     variant="outline"
+                                     size="sm"
+                                     className="h-6 text-[10px] px-2"
+                                     onClick={() => {
+                                         store.updateText({
+                                             leftOffsetX: preset.left.x,
+                                             leftOffsetY: preset.left.y,
+                                             rightOffsetX: preset.right.x,
+                                             rightOffsetY: preset.right.y,
+                                         });
+                                     }}
+                                 >
+                                     {preset.name}
+                                 </Button>
+                             ))}
+                         </div>
+                    </div>
+
+                    <Separator className="bg-border/50"/>
+
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+                        {/* Left Control */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                                <Label className="text-xs font-medium">左侧文字</Label>
+                                <ResetButton onClick={() => store.updateText({ leftOffsetX: 0, leftOffsetY: 0 })} />
+                            </div>
+                            <SliderWithInput 
+                                label="水平偏移 X"
+                                value={store.text.leftOffsetX}
+                                min={-500} max={500}
+                                onChange={(v) => store.updateText({ leftOffsetX: v })}
+                            />
+                            <SliderWithInput 
+                                label="垂直偏移 Y"
+                                value={store.text.leftOffsetY}
+                                min={-500} max={500}
+                                onChange={(v) => store.updateText({ leftOffsetY: v })}
+                            />
+                        </div>
+
+                        {/* Right Control */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                                <Label className="text-xs font-medium">右侧文字</Label>
+                                <ResetButton onClick={() => store.updateText({ rightOffsetX: 0, rightOffsetY: 0 })} />
+                            </div>
+                            <SliderWithInput 
+                                label="水平偏移 X"
+                                value={store.text.rightOffsetX}
+                                min={-500} max={500}
+                                onChange={(v) => store.updateText({ rightOffsetX: v })}
+                            />
+                            <SliderWithInput 
+                                label="垂直偏移 Y"
+                                value={store.text.rightOffsetY}
+                                min={-500} max={500}
+                                onChange={(v) => store.updateText({ rightOffsetY: v })}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+            
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                  <Label>大小 ({store.text.fontSize}px)</Label>
